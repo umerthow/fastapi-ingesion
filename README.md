@@ -124,7 +124,74 @@ All three services should show as "Up" or "healthy".
 
 ---
 
-## 🧪 Testing the Service
+## 🧪 Testing
+
+### Automated Integration Tests
+
+The project includes a comprehensive Python test suite using pytest.
+
+#### Prerequisites
+
+Install test dependencies:
+```bash
+pip install -r requirements-test.txt
+```
+
+#### Run All Tests
+
+```bash
+# From project root
+pytest tests/ -v
+
+# Run specific test file
+pytest tests/test_integration.py -v
+
+# Run specific test class
+pytest tests/test_integration.py::TestFlaskMockServer -v
+
+# Run with detailed output on failures
+pytest tests/ -v --tb=long
+```
+
+#### Test Coverage
+
+The test suite includes **15 test cases** covering:
+
+- ✅ **Service Availability** - Verify Flask and FastAPI services are running
+- ✅ **Flask Mock Server** - Health check, pagination (2 pages), get by ID, 404 handling
+- ✅ **Data Ingestion** - FastAPI ingests data from Flask successfully
+- ✅ **FastAPI Pipeline** - Query customers from database, pagination, get by ID, 404 handling
+- ✅ **Upsert Logic** - Verify no duplicate records on re-ingestion
+- ✅ **Data Consistency** - Compare data between Flask and PostgreSQL
+
+#### Expected Test Output
+
+```
+============================= test session starts ==============================
+collected 15 items
+
+tests/test_integration.py::TestServiceAvailability::test_flask_service_is_running PASSED
+tests/test_integration.py::TestServiceAvailability::test_fastapi_service_is_running PASSED
+tests/test_integration.py::TestFlaskMockServer::test_flask_health_endpoint PASSED
+tests/test_integration.py::TestFlaskMockServer::test_flask_pagination_page_1 PASSED
+tests/test_integration.py::TestFlaskMockServer::test_flask_pagination_page_2 PASSED
+tests/test_integration.py::TestFlaskMockServer::test_flask_get_customer_by_id PASSED
+tests/test_integration.py::TestFlaskMockServer::test_flask_customer_not_found PASSED
+tests/test_integration.py::TestFastAPIIngestion::test_fastapi_health_endpoint PASSED
+tests/test_integration.py::TestFastAPIIngestion::test_fastapi_data_ingestion PASSED
+tests/test_integration.py::TestFastAPIPipeline::test_fastapi_get_customers_from_database PASSED
+tests/test_integration.py::TestFastAPIPipeline::test_fastapi_get_customer_by_id PASSED
+tests/test_integration.py::TestFastAPIPipeline::test_fastapi_customer_not_found PASSED
+tests/test_integration.py::TestUpsertLogic::test_upsert_no_duplicates_on_reingestion PASSED
+tests/test_integration.py::TestFastAPIPagination::test_fastapi_pagination_multiple_pages PASSED
+tests/test_integration.py::TestDataConsistency::test_data_consistency_flask_vs_database PASSED
+
+============================== 15 passed in 0.86s ==============================
+```
+
+---
+
+## 🔧 Manual Testing with cURL
 
 ### 1. Test Flask Mock Server
 
