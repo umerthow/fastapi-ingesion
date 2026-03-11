@@ -1,6 +1,6 @@
 # Multi-Service Data Pipeline
 
-[![Tests](https://github.com/umerthow/fastapi-ingesiton/actions/workflows/tests.yml/badge.svg)](https://github.com/umerthow/fastapi-ingesiton/actions/workflows/tests.yml)
+[![Tests](https://github.com/umerthow/fastapi-ingestion/actions/workflows/tests.yml/badge.svg)](https://github.com/umerthow/fastapi-ingestion/actions/workflows/tests.yml)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-compose-blue.svg)](https://docs.docker.com/compose/)
 
@@ -56,8 +56,8 @@ project-root/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/umerthow/fastapi-ingesiton.git
-cd fastapi-ingesiton
+git clone https://github.com/umerthow/fastapi-ingestion.git
+cd fastapi-ingestion
 ```
 
 ### 2. Configure Environment Variables
