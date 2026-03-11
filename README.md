@@ -52,8 +52,8 @@ project-root/
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd fastapi-ingesion
+git clone https://github.com/umerthow/fastapi-ingesiton.git
+cd fastapi-ingesiton
 ```
 
 ### 2. Configure Environment Variables
