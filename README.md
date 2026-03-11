@@ -68,7 +68,7 @@ Default configuration in `.env`:
 - `POSTGRES_USER=postgres`
 - `POSTGRES_PASSWORD=postgres`
 - `POSTGRES_DB=customers_db`
-- `FLASK_PORT=5001`
+- `FLASK_PORT=5000`
 - `FASTAPI_PORT=8000`
 - `POSTGRES_PORT=5432`
 
@@ -82,7 +82,7 @@ docker-compose up -d --build
 
 This will start:
 - PostgreSQL database on port `5432`
-- Flask mock server on port `5001`
+- Flask mock server on port `5000`
 - FastAPI pipeline service on port `8000`
 
 ### 4. Verify Services are Running
@@ -97,7 +97,7 @@ All three services should show as "Up" or "healthy".
 
 ## 📡 API Endpoints
 
-### Flask Mock Server (Port 5001)
+### Flask Mock Server (Port 5000)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -130,17 +130,17 @@ All three services should show as "Up" or "healthy".
 
 Check health:
 ```bash
-curl http://localhost:5001/api/health
+curl http://localhost:5000/api/health
 ```
 
 Get paginated customers:
 ```bash
-curl http://localhost:5001/api/customers?page=1&limit=5
+curl http://localhost:5000/api/customers?page=1&limit=5
 ```
 
 Get single customer:
 ```bash
-curl http://localhost:5001/api/customers/1
+curl http://localhost:5000/api/customers/1
 ```
 
 ### 2. Test Data Ingestion
@@ -280,44 +280,6 @@ The Flask mock server serves 25 sample customers from `mock-server/data/customer
 - Account balances
 - Date of birth
 - Creation timestamps
-
----
-
-## 🛑 Troubleshooting
-
-### Port 5000 Already in Use (macOS)
-
-If port 5000 is occupied by AirPlay on macOS, the service is configured to use port 5001 instead. Update the `.env` file if needed.
-
-### Services Not Starting
-
-Check Docker Desktop is running:
-```bash
-docker ps
-```
-
-View service logs for errors:
-```bash
-docker-compose logs
-```
-
-### Database Connection Issues
-
-Ensure PostgreSQL is healthy:
-```bash
-docker-compose ps postgres
-```
-
-Restart the database:
-```bash
-docker-compose restart postgres
-```
-
-### Ingestion Returns 0 Records
-
-1. Check if Flask mock server is accessible from pipeline service
-2. View pipeline service logs: `docker-compose logs pipeline-service`
-3. Ensure the database table exists and has correct schema
 
 ---
 
