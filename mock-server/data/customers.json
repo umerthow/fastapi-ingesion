@@ -2,8 +2,8 @@
   {
     "customer_id": 1,
     "first_name": "John",
-    "last_name": "Smith",
-    "email": "john.smith@email.com",
+    "last_name": "Tornado",
+    "email": "john.tornado@email.com",
     "phone": "+1-555-0101",
     "address": "123 Main St, New York, NY 10001",
     "date_of_birth": "1985-03-15",

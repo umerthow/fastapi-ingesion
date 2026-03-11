@@ -31,6 +31,8 @@ services:
     container_name: flask_mock_server
     ports:
       - "${FLASK_PORT:-5001}:5000"
+    volumes:
+      - ./mock-server/data:/app/data
     depends_on:
       postgres:
         condition: service_healthy
