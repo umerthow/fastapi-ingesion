@@ -1,0 +1,66 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop, integration_test ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: customers_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-test.txt
+    
+    - name: Start Flask Mock Server
+      run: |
+        cd mock-server
+        pip install -r requirements.txt
+        python app.py &
+        sleep 5
+      env:
+        FLASK_PORT: 5000
+    
+    - name: Start FastAPI Pipeline Service
+      run: |
+        cd pipeline-service
+        pip install -r requirements.txt
+        uvicorn main:app --host 0.0.0.0 --port 8000 &
+        sleep 5
+      env:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: customers_db
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        FLASK_URL: http://localhost:5000
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v --tb=short

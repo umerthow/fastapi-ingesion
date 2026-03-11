@@ -1,5 +1,9 @@
 # Multi-Service Data Pipeline
 
+[![Tests](https://github.com/umerthow/fastapi-ingesiton/actions/workflows/tests.yml/badge.svg)](https://github.com/umerthow/fastapi-ingesiton/actions/workflows/tests.yml)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
+[![Docker](https://img.shields.io/badge/docker-compose-blue.svg)](https://docs.docker.com/compose/)
+
 A data ingestion pipeline consisting of three Docker services: Flask mock server, FastAPI ingestion service, and PostgreSQL database.
 
 ## 🏗️ Architecture
