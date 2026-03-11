@@ -78,14 +78,15 @@ def upsert_customers(db: Session, customers: List[Dict]) -> int:
                 db.add(new_customer)
                 print(f"Inserted new customer ID: {customer_data['customer_id']}")
             
+            # Commit after each customer to avoid transaction rollback
+            db.commit()
             records_processed += 1
             
         except Exception as e:
             print(f"Error processing customer {customer_data.get('customer_id')}: {e}")
+            db.rollback()  # Rollback the failed transaction
             continue
     
-    # Commit all changes
-    db.commit()
     print(f"Successfully processed {records_processed} customers")
     
     return records_processed

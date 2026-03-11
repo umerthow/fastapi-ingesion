@@ -55,6 +55,36 @@ def ingest_data(db: Session = Depends(get_db)) -> Dict:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ingestion failed: {str(e)}")
 
+@app.get("/api/customers/{customer_id}")
+def get_customer_by_id(customer_id: int, db: Session = Depends(get_db)) -> Dict:
+    """
+    Get a single customer by ID from database.
+    
+    Args:
+        customer_id: The customer ID to fetch
+    
+    Returns:
+        Customer data dictionary
+    
+    Raises:
+        404: If customer not found
+    """
+    try:
+        customer = db.query(Customer).filter(Customer.customer_id == customer_id).first()
+        
+        if customer is None:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Customer with ID {customer_id} not found"
+            )
+        
+        return customer.to_dict()
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch customer: {str(e)}")
+
 @app.get("/api/customers")
 def get_customers(
     page: int = Query(1, ge=1, description="Page number"),
@@ -101,36 +131,6 @@ def get_customers(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch customers: {str(e)}")
-
-@app.get("/api/customers/{customer_id}")
-def get_customer_by_id(customer_id: int, db: Session = Depends(get_db)) -> Dict:
-    """
-    Get a single customer by ID from database.
-    
-    Args:
-        customer_id: The customer ID to fetch
-    
-    Returns:
-        Customer data dictionary
-    
-    Raises:
-        404: If customer not found
-    """
-    try:
-        customer = db.query(Customer).filter(Customer.customer_id == customer_id).first()
-        
-        if customer is None:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Customer with ID {customer_id} not found"
-            )
-        
-        return customer.to_dict()
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch customer: {str(e)}")
 
 @app.get("/api/health")
 def health_check():

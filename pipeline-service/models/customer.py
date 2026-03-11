@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Numeric, DateTime, func
+from sqlalchemy import Column, Integer, String, Numeric
 from database import Base
 
 class Customer(Base):
@@ -17,7 +17,6 @@ class Customer(Base):
     date_of_birth = Column(String(50), nullable=True)
     account_balance = Column(Numeric(15, 2), nullable=True)
     created_at = Column(String(50), nullable=True)
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     def __repr__(self):
         return f"<Customer(id={self.customer_id}, name={self.first_name} {self.last_name}, email={self.email})>"
@@ -33,6 +32,5 @@ class Customer(Base):
             "address": self.address,
             "date_of_birth": self.date_of_birth,
             "account_balance": float(self.account_balance) if self.account_balance else None,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+            "created_at": self.created_at
         }
