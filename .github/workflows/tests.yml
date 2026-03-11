@@ -62,8 +62,8 @@ jobs:
       run: |
         cd pipeline-service
         pip install -r requirements.txt
-        nohup uvicorn main:app --host 0.0.0.0 --port 8000 > fastapi.log 2>&1 &
-        echo $! > fastapi.pid
+        nohup uvicorn main:app --host 0.0.0.0 --port 8000 > ../fastapi.log 2>&1 &
+        echo $! > ../fastapi.pid
       env:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
@@ -71,6 +71,7 @@ jobs:
         POSTGRES_HOST: localhost
         POSTGRES_PORT: 5432
         FLASK_URL: http://localhost:5000
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/customers_db
     
     - name: Wait for FastAPI to be ready
       run: |
@@ -83,6 +84,11 @@ jobs:
           sleep 2
         done
     
+    - name: Verify database connection
+      run: |
+        sleep 3
+        curl -v http://localhost:8000/api/health
+    
     - name: Run tests
       run: |
         pytest tests/ -v --tb=short
@@ -91,6 +97,6 @@ jobs:
       if: failure()
       run: |
         echo "=== Flask logs ==="
-        cat mock-server/flask.log || echo "No Flask logs"
+        cat flask.log || echo "No Flask logs"
         echo "=== FastAPI logs ==="
-        cat pipeline-service/fastapi.log || echo "No FastAPI logs"
+        cat fastapi.log || echo "No FastAPI logs"
